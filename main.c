@@ -5,7 +5,8 @@
 // #include "stack/arraystack/arraystacktest.c"
 // #include "stack/linkedstack/linkedstacktest.c"
 // #include "queue/arrayqueue/arrayqueuetest.c"
-#include "queue/linkedqueue/linkedqueuetest.c"
+// #include "queue/linkedqueue/linkedqueuetest.c"
+#include "queue/linkeddeque/linkeddequetest.c"
 
 int main() {
   // arrayListMain();
@@ -15,6 +16,7 @@ int main() {
   // arrayStackMain();
   // linkedStackMain();
   // arrayQueueMain();
-  linkedQueueMain();
+  // linkedQueueMain();
+  linkedDequeMain();
   return 0;
 }
