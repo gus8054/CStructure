@@ -8,19 +8,24 @@ LinkedList* createLinkedList(){
 }
 
 void deleteLinkedList(LinkedList* pList){
-  if(pList != NULL){
-    clearLinkedList(pList);
-    free(pList);
+  if(pList == NULL) return;
+  LinkedListNode* pCurrentNode = pList->headerNode.pLink;
+  LinkedListNode* pDelNode = NULL;
+
+  while(pCurrentNode != NULL){
+    pDelNode = pCurrentNode;
+    pCurrentNode = pCurrentNode->pLink;
+    free(pDelNode);
   }
+  free(pList);
 }
 
 bool addLLElement(LinkedList* pList, int position, LinkedListNode element){
   if(pList == NULL) return false;
-  if(position < 0 || position >= pList->currentElementCount + 1) return false;
+  if(position < 0 || position > pList->currentElementCount) return false;
   LinkedListNode* pNewNode = (LinkedListNode*)malloc(sizeof(LinkedListNode));
   if(pNewNode == NULL) return false;
-  *pNewNode = element;
-  pNewNode->pLink = NULL;
+  pNewNode->data = element.data;
   LinkedListNode* pPreNode = &(pList->headerNode);
   for(int i = 0; i < position; i++){
     pPreNode = pPreNode->pLink;
@@ -33,24 +38,32 @@ bool addLLElement(LinkedList* pList, int position, LinkedListNode element){
 
 bool removeLLElement(LinkedList* pList, int position){
   if(pList == NULL) return false;
-  if(position < 0 || position >= pList->currentElementCount) return false;
+  if(position < 0 || position > pList->currentElementCount - 1) return false;
 
   LinkedListNode* pPreNode = &(pList->headerNode);
   for(int i = 0; i < position; i++){
     pPreNode = pPreNode->pLink;
   }
-  LinkedListNode* pTargetNode = pPreNode->pLink;
-  pPreNode->pLink = pTargetNode->pLink;
-  free(pTargetNode);
+  LinkedListNode* pDelNode = pPreNode->pLink;
+  pPreNode->pLink = pDelNode->pLink;
+  free(pDelNode);
   pList->currentElementCount--;
   return true;
 }
 
 void clearLinkedList(LinkedList* pList){
   if(pList == NULL) return;
-  while(pList->currentElementCount != 0){
-    removeLLElement(pList, 0);
+
+  LinkedListNode* pCurrentNode = pList->headerNode.pLink;
+  LinkedListNode* pDelNode = NULL;
+
+  while(pCurrentNode != NULL){
+    pDelNode = pCurrentNode;
+    pCurrentNode = pCurrentNode->pLink;
+    free(pDelNode);
   }
+  pList->headerNode.pLink = NULL;
+  pList->currentElementCount = 0;
 }
 
 int getLinkedListLength(LinkedList* pList){
@@ -60,10 +73,10 @@ int getLinkedListLength(LinkedList* pList){
 
 LinkedListNode* getLinkedListNode(LinkedList* pList, int position){
   if(pList == NULL) return NULL;
-  if(position < 0 || position >= pList->currentElementCount) return NULL;
-  LinkedListNode* pTargetNode = &(pList->headerNode);
-  for(int i = 0; i < position + 1; i++){
-    pTargetNode = pTargetNode->pLink;
+  if(position < 0 || position > pList->currentElementCount - 1) return NULL;
+  LinkedListNode* pPreNode = &(pList->headerNode);
+  for(int i = 0; i < position; i++){
+    pPreNode = pPreNode->pLink;
   }
-  return pTargetNode;
+  return pPreNode->pLink;
 }
