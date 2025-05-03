@@ -9,14 +9,12 @@ LinkedStack* createLinkedStack(){
 
 void deleteLinkedStack(LinkedStack* pStack){
     if(pStack == NULL) return;
-    if(pStack->currentElementCount > 0){
-        LinkedStackNode* pCurrentNode = pStack->pTopElement;
-        LinkedStackNode* pDelNode = NULL;
-        while(pCurrentNode != NULL){
-            pDelNode = pCurrentNode;
-            pCurrentNode = pCurrentNode->pLink;
-            free(pDelNode);
-        }
+    LinkedStackNode* pCurrentNode = pStack->pTopElement;
+    LinkedStackNode* pDelNode;
+    while(pCurrentNode != NULL){
+        pDelNode = pCurrentNode;
+        pCurrentNode = pCurrentNode->pLink;
+        free(pDelNode);
     }
     free(pStack);
 }
@@ -34,7 +32,7 @@ bool pushLS(LinkedStack* pStack, LinkedStackNode element){
 
 LinkedStackNode* popLS(LinkedStack* pStack){
     if(pStack == NULL) return NULL;
-    if(isLinkedStackEmpty(pStack)) return NULL;
+    if(pStack->currentElementCount == 0) return NULL;
     LinkedStackNode* pTargetNode = pStack->pTopElement;
     pStack->pTopElement = pTargetNode->pLink;
     pTargetNode->pLink = NULL;
@@ -44,7 +42,7 @@ LinkedStackNode* popLS(LinkedStack* pStack){
 
 LinkedStackNode* peekLS(LinkedStack* pStack){
     if(pStack == NULL) return NULL;
-    if(isLinkedStackEmpty(pStack)) return NULL;
+    if(pStack->currentElementCount == 0) return NULL;
     return pStack->pTopElement;
 }
 
@@ -56,5 +54,3 @@ bool isLinkedStackEmpty(LinkedStack* pStack){
     if(pStack == NULL) return false;
     return pStack->currentElementCount == 0;
 }
-
-
