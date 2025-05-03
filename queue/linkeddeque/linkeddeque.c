@@ -24,7 +24,7 @@ bool pushFrontLD(LinkedDeque* pDeque, LinkedDequeNode element){
     if(isLinkedDequeFull(pDeque)) return false;
     LinkedDequeNode* pNewNode = (LinkedDequeNode*)malloc(sizeof(LinkedDequeNode));
     if(pNewNode == NULL) return false;
-    *pNewNode = element;
+    pNewNode->data = element.data;
     pNewNode->pLeftLink = NULL;
     pNewNode->pRightLink = NULL;
     if(pDeque->currentElementCount == 0){
@@ -42,6 +42,7 @@ bool pushFrontLD(LinkedDeque* pDeque, LinkedDequeNode element){
 LinkedDequeNode* popFrontLD(LinkedDeque* pDeque){
     if(pDeque == NULL) return NULL;
     if(isLinkedDequeEmpty(pDeque)) return NULL;
+
     LinkedDequeNode* pPopNode = pDeque->pFront;
     if(pDeque->currentElementCount == 1){
         pDeque->pFront = NULL;
@@ -51,6 +52,7 @@ LinkedDequeNode* popFrontLD(LinkedDeque* pDeque){
         pPopNode->pRightLink = NULL;
         pDeque->pFront->pLeftLink = NULL;
     }
+
     pDeque->currentElementCount--;
     return pPopNode;
 }
@@ -59,14 +61,16 @@ LinkedDequeNode* popFrontLD(LinkedDeque* pDeque){
 bool pushRearLD(LinkedDeque* pDeque, LinkedDequeNode element){
     if(pDeque == NULL) return false;
     if(isLinkedDequeFull(pDeque)) return false;
+
     LinkedDequeNode* pNewNode = (LinkedDequeNode*)malloc(sizeof(LinkedDequeNode));
     if(pNewNode == NULL) return false;
-    *pNewNode = element;
+    pNewNode->data = element.data;
     pNewNode->pLeftLink = NULL;
     pNewNode->pRightLink = NULL;
+
     if(pDeque->currentElementCount == 0){
-       pDeque->pFront = pNewNode;
-       pDeque->pRear = pNewNode; 
+        pDeque->pFront = pNewNode;
+        pDeque->pRear = pNewNode; 
     }else{
         pNewNode->pLeftLink = pDeque->pRear;
         pDeque->pRear->pRightLink = pNewNode;
@@ -79,6 +83,7 @@ bool pushRearLD(LinkedDeque* pDeque, LinkedDequeNode element){
 LinkedDequeNode* popRearLD(LinkedDeque* pDeque){
     if(pDeque == NULL) return NULL;
     if(isLinkedDequeEmpty(pDeque)) return NULL;
+
     LinkedDequeNode* pPopNode = pDeque->pRear;
     if(pDeque->currentElementCount == 1){
         pDeque->pFront = NULL;
@@ -105,7 +110,6 @@ LinkedDequeNode* peekRearLD(LinkedDeque* pDeque){
 }
 
 bool isLinkedDequeFull(LinkedDeque* pDeque){
-    if(pDeque == NULL) return false;
     return false;
 }
 
