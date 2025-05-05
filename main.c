@@ -6,8 +6,8 @@
 // #include "stack/linkedstack/linkedstacktest.c"
 // #include "queue/arrayqueue/arrayqueuetest.c"
 // #include "queue/linkedqueue/linkedqueuetest.c"
-#include "queue/linkeddeque/linkeddequetest.c"
-// #include "tree/bintree/bintreetest.c"
+// #include "queue/linkeddeque/linkeddequetest.c"
+#include "tree/bintree/bintreetest.c"
 
 int main() {
   // arrayListMain();
@@ -18,7 +18,7 @@ int main() {
   // linkedStackMain();
   // arrayQueueMain();
   // linkedQueueMain();
-  linkedDequeMain();
-  // binTreeMain();
+  // linkedDequeMain();
+  binTreeMain();
   return 0;
 }

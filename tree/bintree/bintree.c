@@ -1,16 +1,20 @@
 #include "bintree.h"
 
-BinTree* createBinTree(BinTreeNode rootNode){
+BinTree* createBinTree(BinTreeNode element){
     BinTree* pReturn = (BinTree*)malloc(sizeof(BinTree));
     if(pReturn == NULL) return NULL;
-    pReturn->pRootNode = (BinTreeNode*)malloc(sizeof(BinTreeNode));
-    if(pReturn->pRootNode == NULL){
+
+    BinTreeNode* pRootNode = (BinTreeNode*)malloc(sizeof(BinTreeNode));
+    if(pRootNode == NULL){
         free(pReturn);
         return NULL;
     }
-    *(pReturn->pRootNode) = rootNode;
-    pReturn->pRootNode->pLeftChild = NULL;
-    pReturn->pRootNode->pRightChild = NULL;
+
+    pRootNode->data = element.data;
+    pRootNode->pLeftChild = NULL;
+    pRootNode->pRightChild = NULL;
+    
+    pReturn->pRootNode = pRootNode;
     return pReturn;
 }
 
@@ -21,42 +25,39 @@ void deleteBinTree(BinTree* pBinTree){
 }
 
 void removeBinTreeNode(BinTreeNode* pNode){
-    if(pNode != NULL){
-       removeBinTreeNode(pNode->pLeftChild);
-       removeBinTreeNode(pNode->pRightChild);
-       free(pNode);
-    }
+    if(pNode == NULL) return;
+    removeBinTreeNode(pNode->pLeftChild);
+    removeBinTreeNode(pNode->pRightChild);
+    free(pNode);
 }
 
 BinTreeNode* insertLeftChildNodeBT(BinTreeNode* pParentNode, BinTreeNode element){
     if(pParentNode == NULL) return NULL;
-    BinTreeNode* pNewNode = NULL;
-    if(pParentNode->pLeftChild == NULL){
-        pNewNode = (BinTreeNode*)malloc(sizeof(BinTreeNode));
-        if(pNewNode == NULL) return NULL;
-        *pNewNode = element;
-        pNewNode->pLeftChild = NULL;
-        pNewNode->pRightChild = NULL;
-        pParentNode->pLeftChild = pNewNode;
-    }else{
-        printf("ERROR: 이미 왼쪽 자식 노드가 존재함.\n");
-    }
+    if(pParentNode->pLeftChild != NULL) return NULL;
+
+    BinTreeNode* pNewNode = (BinTreeNode*)malloc(sizeof(BinTreeNode));
+    if(pNewNode == NULL) return NULL;
+
+    pNewNode->data = element.data;
+    pNewNode->pLeftChild = NULL;
+    pNewNode->pRightChild = NULL;
+
+    pParentNode->pLeftChild = pNewNode;
     return pNewNode;
 }
 
 BinTreeNode* insertRightChildNodeBT(BinTreeNode* pParentNode, BinTreeNode element){
     if(pParentNode == NULL) return NULL;
-    BinTreeNode* pNewNode = NULL;
-    if(pParentNode->pRightChild == NULL){
-        pNewNode = (BinTreeNode*)malloc(sizeof(BinTreeNode));
-        if(pNewNode == NULL) return NULL;
-        *pNewNode = element;
-        pNewNode->pLeftChild = NULL;
-        pNewNode->pRightChild = NULL;
-        pParentNode->pRightChild = pNewNode;
-    }else{
-        printf("ERROR: 이미 오른쪽 자식 노드가 존재함.\n");
-    }
+    if(pParentNode->pRightChild != NULL) return NULL;
+
+    BinTreeNode* pNewNode = (BinTreeNode*)malloc(sizeof(BinTreeNode));
+    if(pNewNode == NULL) return NULL;
+
+    pNewNode->data = element.data;
+    pNewNode->pLeftChild = NULL;
+    pNewNode->pRightChild = NULL;
+
+    pParentNode->pRightChild = pNewNode;
     return pNewNode;
 }
 
@@ -65,14 +66,14 @@ BinTreeNode* getRootNodeBT(BinTree* pBinTree){
     return pBinTree->pRootNode;
 }
 
-BinTreeNode* getLeftChildNodeBT(BinTreeNode* pNode){
-    if(pNode == NULL) return NULL;
-    return pNode->pLeftChild;
+BinTreeNode* getLeftChildNodeBT(BinTreeNode* pParentNode){
+    if(pParentNode == NULL) return NULL;
+    return pParentNode->pLeftChild;
 }
 
-BinTreeNode* getRightChildNodeBT(BinTreeNode* pNode){
-    if(pNode == NULL) return NULL;
-    return pNode->pRightChild;
+BinTreeNode* getRightChildNodeBT(BinTreeNode* pParentNode){
+    if(pParentNode == NULL) return NULL;
+    return pParentNode->pRightChild;
 }
 
 void preorderTraversalRecursiveBinTree(BinTree* pBinTree){
@@ -80,11 +81,11 @@ void preorderTraversalRecursiveBinTree(BinTree* pBinTree){
     preorderTraversalRecursiveBinTreeNode(pBinTree->pRootNode);
 }
 
-void preorderTraversalRecursiveBinTreeNode(BinTreeNode* pParentNode){
-    if(pParentNode == NULL) return;
-    printf("%c ", pParentNode->data);
-    preorderTraversalRecursiveBinTreeNode(pParentNode->pLeftChild);
-    preorderTraversalRecursiveBinTreeNode(pParentNode->pRightChild);
+void preorderTraversalRecursiveBinTreeNode(BinTreeNode* pNode){
+    if(pNode == NULL) return;
+    printf("%c ", pNode->data);
+    preorderTraversalRecursiveBinTreeNode(pNode->pLeftChild);
+    preorderTraversalRecursiveBinTreeNode(pNode->pLeftChild);
 }
 
 void inorderTraversalRecursiveBinTree(BinTree* pBinTree){
@@ -92,11 +93,11 @@ void inorderTraversalRecursiveBinTree(BinTree* pBinTree){
     inorderTraversalRecursiveBinTreeNode(pBinTree->pRootNode);
 }
 
-void inorderTraversalRecursiveBinTreeNode(BinTreeNode* pParentNode){
-    if(pParentNode == NULL) return;
-    inorderTraversalRecursiveBinTreeNode(pParentNode->pLeftChild);
-    printf("%c ", pParentNode->data);
-    inorderTraversalRecursiveBinTreeNode(pParentNode->pRightChild);
+void inorderTraversalRecursiveBinTreeNode(BinTreeNode* pNode){
+    if(pNode == NULL) return;
+    inorderTraversalRecursiveBinTreeNode(pNode->pLeftChild);
+    printf("%c ", pNode->data);
+    inorderTraversalRecursiveBinTreeNode(pNode->pLeftChild);
 }
 
 void postorderTraversalRecursiveBinTree(BinTree* pBinTree){
@@ -104,81 +105,76 @@ void postorderTraversalRecursiveBinTree(BinTree* pBinTree){
     postorderTraversalRecursiveBinTreeNode(pBinTree->pRootNode);
 }
 
-void postorderTraversalRecursiveBinTreeNode(BinTreeNode* pParentNode){
-    if(pParentNode == NULL) return;
-    postorderTraversalRecursiveBinTreeNode(pParentNode->pLeftChild);
-    postorderTraversalRecursiveBinTreeNode(pParentNode->pRightChild);
-    printf("%c ", pParentNode->data);
+void postorderTraversalRecursiveBinTreeNode(BinTreeNode* pNode){
+    if(pNode == NULL) return;
+    postorderTraversalRecursiveBinTreeNode(pNode->pLeftChild);
+    postorderTraversalRecursiveBinTreeNode(pNode->pLeftChild);
+    printf("%c ", pNode->data);
 }
 
-BinTree* copyBinTree(BinTree* pSource){
-    if(pSource == NULL) return NULL;
+BinTree* copyBinTree(BinTree* pSourceBinTree){
+    if(pSourceBinTree == NULL) return NULL;
     BinTree* pReturn = (BinTree*)malloc(sizeof(BinTree));
     if(pReturn == NULL) return NULL;
-    pReturn->pRootNode = copyBinTreeNode(pSource->pRootNode);
+    
+    BinTreeNode* pRootNode = copyBinTreeNode(pSourceBinTree->pRootNode);
+    pReturn->pRootNode = pRootNode;
     return pReturn;
 }
 
-BinTreeNode* copyBinTreeNode(BinTreeNode* pSourceNode){
-    if(pSourceNode == NULL) return NULL;
-    BinTreeNode* pReturn = (BinTreeNode*)malloc(sizeof(BinTreeNode));
-    if(pReturn == NULL) return NULL;
-    *pReturn = *pSourceNode;
-    pReturn->pLeftChild = copyBinTreeNode(pSourceNode->pLeftChild);
-    pReturn->pRightChild = copyBinTreeNode(pSourceNode->pRightChild);
-    return pReturn;
+BinTreeNode* copyBinTreeNode(BinTreeNode* pNode){
+    if(pNode == NULL) return NULL;
+    BinTreeNode* pNewNode = (BinTreeNode*)malloc(sizeof(BinTreeNode));
+    if(pNewNode == NULL) return NULL;
+    pNewNode->data = pNode->data;
+    pNewNode->pLeftChild = copyBinTreeNode(pNode->pLeftChild);
+    pNewNode->pRightChild = copyBinTreeNode(pNode->pRightChild);
+    return pNewNode;
 }
 
-bool equalBinTree(BinTree* pFirst, BinTree* pSecond){
-    if(pFirst == NULL && pSecond == NULL) return true;
-    else if((pFirst != NULL && pSecond != NULL)
-        && equalBinTreeNode(pFirst->pRootNode, pSecond->pRootNode)){
-        return true;
-    }
+bool equalBinTree(BinTree* pFirstBinTree, BinTree* pSecondBinTree){
+    if(pFirstBinTree == NULL && pSecondBinTree == NULL) return true;
+    if(pFirstBinTree != NULL && pSecondBinTree != NULL && equalBinTreeNode(pFirstBinTree->pRootNode, pSecondBinTree->pRootNode)) return true;
     return false;
 }
 
-bool equalBinTreeNode(BinTreeNode* pFirst, BinTreeNode* pSecond){
-    if(pFirst == NULL && pSecond == NULL) return true;
-    else if((pFirst != NULL && pSecond != NULL)
-        && (pFirst->data == pSecond->data)
-        && equalBinTreeNode(pFirst->pLeftChild, pSecond->pLeftChild)
-        && equalBinTreeNode(pFirst->pRightChild, pSecond->pRightChild))
+bool equalBinTreeNode(BinTreeNode* pFirstNode, BinTreeNode* pSecondNode){
+    if(pFirstNode == NULL && pSecondNode == NULL) return true;
+    if(pFirstNode != NULL && pSecondNode != NULL && pFirstNode->data == pSecondNode->data
+        && equalBinTreeNode(pFirstNode->pLeftChild, pSecondNode->pLeftChild) && equalBinTreeNode(pFirstNode->pRightChild, pSecondNode->pRightChild))
         return true;
     return false;
 }
 
-int getNodeCountBT(BinTree* pSource){
-    if(pSource == NULL) return 0;
-    return getNodeCountBTNode(pSource->pRootNode);
+int getNodeCountBT(BinTree* pBinTree){
+    if(pBinTree == NULL) return 0;
+    return getNodeCountBTNode(pBinTree->pRootNode);
 }
 
-int getNodeCountBTNode(BinTreeNode* pSource){
-    if(pSource == NULL) return 0;
-    return getNodeCountBTNode(pSource->pLeftChild) + getNodeCountBTNode(pSource->pRightChild) + 1;
+int getNodeCountBTNode(BinTreeNode* pNode){
+    if(pNode == NULL) return 0;
+    return 1 + getNodeCountBTNode(pNode->pLeftChild) + getNodeCountBTNode(pNode->pRightChild);
 }
 
-int getLeafNodeCountBT(BinTree* pSource){
-    if(pSource == NULL) return 0;
-    return getLeafNodeCountBTNode(pSource->pRootNode);
+int getLeafNodeCountBT(BinTree* pBinTree){
+    if(pBinTree == NULL) return 0;
+    return getLeafNodeCountBTNode(pBinTree->pRootNode);
 }
 
-int getLeafNodeCountBTNode(BinTreeNode* pSource){
-    if(pSource == NULL) return 0;
-    if(pSource->pLeftChild == NULL & pSource->pRightChild == NULL) return 1;
-    else return getLeafNodeCountBTNode(pSource->pLeftChild) + getLeafNodeCountBTNode(pSource->pRightChild);
+int getLeafNodeCountBTNode(BinTreeNode* pNode){
+    if(pNode == NULL) return 0;
+    if(pNode->pLeftChild == NULL && pNode->pRightChild == NULL) return 1;
+    return getLeafNodeCountBTNode(pNode->pLeftChild) + getLeafNodeCountBTNode(pNode->pRightChild);
 }
 
-int getHeightBT(BinTree* pSource){
-    if(pSource == NULL) return 0;
-    return getHeightBTNode(pSource->pRootNode);
+int getHeightBT(BinTree* pBinTree){
+    if(pBinTree == NULL) return 0;
+    return getHeightBTNode(pBinTree->pRootNode);
 }
 
-int getHeightBTNode(BinTreeNode* pSource){
-    if(pSource == NULL) return 0;
-    if(pSource->pLeftChild == NULL && pSource->pRightChild == NULL) return 1;
-    int leftHeight = getHeightBTNode(pSource->pLeftChild);
-    int rightHeight = getHeightBTNode(pSource->pRightChild);
-    return (leftHeight >= rightHeight) ? leftHeight + 1 : rightHeight + 1;
+int getHeightBTNode(BinTreeNode* pNode){
+    if(pNode == NULL) return 0;
+    int leftHeight = getHeightBTNode(pNode->pLeftChild);
+    int rightHeight = getHeightBTNode(pNode->pRightChild);
+    return leftHeight > rightHeight ? leftHeight + 1 : rightHeight + 1;
 }
-
