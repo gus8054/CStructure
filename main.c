@@ -7,7 +7,8 @@
 // #include "queue/arrayqueue/arrayqueuetest.c"
 // #include "queue/linkedqueue/linkedqueuetest.c"
 // #include "queue/linkeddeque/linkeddequetest.c"
-#include "tree/bintree/bintreetest.c"
+// #include "tree/bintree/bintreetest.c"
+#include "tree/bintreetraversal/bintreetraversaltest.c"
 
 int main() {
   // arrayListMain();
@@ -19,6 +20,7 @@ int main() {
   // arrayQueueMain();
   // linkedQueueMain();
   // linkedDequeMain();
-  binTreeMain();
+  // binTreeMain();
+  binTreeTraversalMain();
   return 0;
 }
