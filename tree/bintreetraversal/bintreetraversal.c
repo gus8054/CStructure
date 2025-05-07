@@ -270,11 +270,11 @@ void inorderTraversalBinTree(BinTree* pBinTree){
         if(isStackEmpty(pStack)) break;
         StackNode* pStackNode = popStack(pStack);
         if(pStackNode == NULL) return;
-        BinTreeNode* pBinTreeNode = pStackNode->data;
+        pNode = pStackNode->data;
     
-        printf("%c ", pBinTreeNode->data);
+        printf("%c ", pNode->data);
         
-        pNode = getRightChildNodeBT(pBinTreeNode);
+        pNode = getRightChildNodeBT(pNode);
         free(pStackNode);
     }
     deleteStack(pStack);
