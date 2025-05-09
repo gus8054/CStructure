@@ -8,7 +8,8 @@
 // #include "queue/linkedqueue/linkedqueuetest.c"
 // #include "queue/linkeddeque/linkeddequetest.c"
 // #include "tree/bintree/bintreetest.c"
-#include "tree/bintreetraversal/bintreetraversaltest.c"
+// #include "tree/bintreetraversal/bintreetraversaltest.c"
+#include "tree/heap/arrayheap/arrayheaptest.c"
 
 int main() {
   // arrayListMain();
@@ -21,6 +22,7 @@ int main() {
   // linkedQueueMain();
   // linkedDequeMain();
   // binTreeMain();
-  binTreeTraversalMain();
+  // binTreeTraversalMain();
+  arrayHeapTestMain();
   return 0;
 }
