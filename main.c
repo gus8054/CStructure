@@ -9,7 +9,7 @@
 // #include "queue/linkeddeque/linkeddequetest.c"
 // #include "tree/bintree/bintreetest.c"
 // #include "tree/bintreetraversal/bintreetraversaltest.c"
-#include "tree/heap/arrayheap/arrayheaptest.c"
+#include "tree/arrayheap/arrayheaptest.c"
 
 int main() {
   // arrayListMain();
