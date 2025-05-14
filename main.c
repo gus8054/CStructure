@@ -10,6 +10,7 @@
 // #include "tree/bintree/bintreetest.c"
 // #include "tree/bintreetraversal/bintreetraversaltest.c"
 #include "tree/arrayheap/arrayheaptest.c"
+// #include "tree/binsearchtree/binsearchtreetest.c"
 
 int main() {
   // arrayListMain();
@@ -24,5 +25,6 @@ int main() {
   // binTreeMain();
   // binTreeTraversalMain();
   arrayHeapTestMain();
+  // binSearchTreeMain();
   return 0;
 }

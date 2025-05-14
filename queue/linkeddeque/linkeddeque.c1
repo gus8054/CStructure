@@ -9,13 +9,11 @@ LinkedDeque* createLinkedDeque(){
 
 void deleteLinkedDeque(LinkedDeque* pDeque){
     if(pDeque == NULL) return;
-
-    LinkedDequeNode* pNode = pDeque->pFront;
+    LinkedDequeNode* pCurrentNode = pDeque->pFront;
     LinkedDequeNode* pDelNode = NULL;
-
-    while(pNode != NULL){
-        pDelNode = pNode;
-        pNode = pNode->pRightLink;
+    while(pCurrentNode != NULL){
+        pDelNode = pCurrentNode;
+        pCurrentNode = pCurrentNode->pRightLink;
         free(pDelNode);
     }
     free(pDeque);
@@ -23,17 +21,15 @@ void deleteLinkedDeque(LinkedDeque* pDeque){
 
 bool pushFrontLD(LinkedDeque* pDeque, LinkedDequeNode element){
     if(pDeque == NULL) return false;
-
+    if(isLinkedDequeFull(pDeque)) return false;
     LinkedDequeNode* pNewNode = (LinkedDequeNode*)malloc(sizeof(LinkedDequeNode));
     if(pNewNode == NULL) return false;
-
     pNewNode->data = element.data;
     pNewNode->pLeftLink = NULL;
     pNewNode->pRightLink = NULL;
-
     if(pDeque->currentElementCount == 0){
-        pDeque->pFront = pNewNode;
-        pDeque->pRear = pNewNode;
+       pDeque->pFront = pNewNode;
+       pDeque->pRear = pNewNode; 
     }else{
         pNewNode->pRightLink = pDeque->pFront;
         pDeque->pFront->pLeftLink = pNewNode;
@@ -45,24 +41,26 @@ bool pushFrontLD(LinkedDeque* pDeque, LinkedDequeNode element){
 
 LinkedDequeNode* popFrontLD(LinkedDeque* pDeque){
     if(pDeque == NULL) return NULL;
-    if(pDeque->currentElementCount == 0) return NULL;
-    
-    LinkedDequeNode* pTargetNode = pDeque->pFront;
+    if(isLinkedDequeEmpty(pDeque)) return NULL;
 
+    LinkedDequeNode* pPopNode = pDeque->pFront;
     if(pDeque->currentElementCount == 1){
         pDeque->pFront = NULL;
-        pDeque->pRear = NULL;
+        pDeque->pRear = NULL; 
     }else{
-        pDeque->pFront = pTargetNode->pRightLink;
+        pDeque->pFront = pPopNode->pRightLink;
+        pPopNode->pRightLink = NULL;
         pDeque->pFront->pLeftLink = NULL;
-        pTargetNode->pRightLink = NULL;
     }
+
     pDeque->currentElementCount--;
-    return pTargetNode;
+    return pPopNode;
 }
+
 
 bool pushRearLD(LinkedDeque* pDeque, LinkedDequeNode element){
     if(pDeque == NULL) return false;
+    if(isLinkedDequeFull(pDeque)) return false;
 
     LinkedDequeNode* pNewNode = (LinkedDequeNode*)malloc(sizeof(LinkedDequeNode));
     if(pNewNode == NULL) return false;
@@ -72,7 +70,7 @@ bool pushRearLD(LinkedDeque* pDeque, LinkedDequeNode element){
 
     if(pDeque->currentElementCount == 0){
         pDeque->pFront = pNewNode;
-        pDeque->pRear = pNewNode;
+        pDeque->pRear = pNewNode; 
     }else{
         pNewNode->pLeftLink = pDeque->pRear;
         pDeque->pRear->pRightLink = pNewNode;
@@ -84,31 +82,30 @@ bool pushRearLD(LinkedDeque* pDeque, LinkedDequeNode element){
 
 LinkedDequeNode* popRearLD(LinkedDeque* pDeque){
     if(pDeque == NULL) return NULL;
-    if(pDeque->currentElementCount == 0) return NULL;
-    
-    LinkedDequeNode* pTargetNode = pDeque->pRear;
+    if(isLinkedDequeEmpty(pDeque)) return NULL;
 
+    LinkedDequeNode* pPopNode = pDeque->pRear;
     if(pDeque->currentElementCount == 1){
         pDeque->pFront = NULL;
-        pDeque->pRear = NULL;
+        pDeque->pRear = NULL; 
     }else{
-        pDeque->pRear = pTargetNode->pLeftLink;
+        pDeque->pRear = pPopNode->pLeftLink;
+        pPopNode->pLeftLink = NULL;
         pDeque->pRear->pRightLink = NULL;
-        pTargetNode->pLeftLink = NULL;
     }
     pDeque->currentElementCount--;
-    return pTargetNode;
+    return pPopNode;
 }
 
 LinkedDequeNode* peekFrontLD(LinkedDeque* pDeque){
     if(pDeque == NULL) return NULL;
-    if(pDeque->currentElementCount == 0) return NULL;
+    if(isLinkedDequeEmpty(pDeque)) return NULL;
     return pDeque->pFront;
 }
 
 LinkedDequeNode* peekRearLD(LinkedDeque* pDeque){
     if(pDeque == NULL) return NULL;
-    if(pDeque->currentElementCount == 0) return NULL;
+    if(isLinkedDequeEmpty(pDeque)) return NULL;
     return pDeque->pRear;
 }
 
@@ -120,3 +117,4 @@ bool isLinkedDequeEmpty(LinkedDeque* pDeque){
     if(pDeque == NULL) return false;
     return pDeque->currentElementCount == 0;
 }
+
