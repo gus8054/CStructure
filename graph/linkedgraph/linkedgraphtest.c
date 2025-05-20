@@ -14,14 +14,14 @@ void displayLinkedGraph(LinkedGraph* pGraph) {
     
     printf("\n[정점 상태]\n");
     for (int i = 0; i < pGraph->maxVertexCount; i++) {
-        if (pGraph->pVertex[i] == USED) {
+        if (pGraph->pVertex[i]) {
             printf("정점 %d: 사용 중\n", i);
         }
     }
     
     printf("\n[인접 리스트]\n");
     for (int i = 0; i < pGraph->maxVertexCount; i++) {
-        if (pGraph->pVertex[i] == USED) {
+        if (pGraph->pVertex[i]) {
             printf("정점 %d의 인접 정점:", i);
             
             LinkedList* adjacentList = pGraph->ppAdjacentEdge[i];
@@ -43,27 +43,6 @@ void displayLinkedGraph(LinkedGraph* pGraph) {
         }
     }
     printf("=====================\n\n");
-}
-
-// isEmptyLG 함수 구현 (코드에 없어서 추가)
-bool _isEmptyLG(LinkedGraph* pGraph) {
-    if (pGraph == NULL) return false;
-    return pGraph->currentVertexCount == 0;
-}
-
-// deleteLinkedGraph 함수 구현 (코드에 없어서 추가)
-void _deleteLinkedGraph(LinkedGraph* pGraph) {
-    if (pGraph == NULL) return;
-    
-    for (int i = 0; i < pGraph->maxVertexCount; i++) {
-        if (pGraph->ppAdjacentEdge[i] != NULL) {
-            deleteLinkedList(pGraph->ppAdjacentEdge[i]);
-        }
-    }
-    
-    if (pGraph->ppAdjacentEdge != NULL) free(pGraph->ppAdjacentEdge);
-    if (pGraph->pVertex != NULL) free(pGraph->pVertex);
-    free(pGraph);
 }
 
 int linkedGraphMain() {
@@ -206,18 +185,18 @@ int linkedGraphMain() {
     
     // 14. 그래프가 비어있는지 확인
     printf("\n14. 그래프 비어있는지 확인\n");
-    printf("무방향 그래프: %s\n", isEmptyLG(undirectedGraph) ? "비어있음" : "비어있지 않음");
+    printf("무방향 그래프: %s\n", isLinkedGraphEmpty(undirectedGraph) ? "비어있음" : "비어있지 않음");
     
     // 15. 모든 정점 제거 테스트
     printf("\n15. 무방향 그래프의 모든 정점 제거\n");
     for (int i = 0; i < maxVertexCount; i++) {
-        if (undirectedGraph->pVertex[i] == USED) {
+        if (undirectedGraph->pVertex[i]) {
             removeVertexLG(undirectedGraph, i);
             printf("정점 %d 제거\n", i);
         }
     }
     displayLinkedGraph(undirectedGraph);
-    printf("무방향 그래프: %s\n", isEmptyLG(undirectedGraph) ? "비어있음" : "비어있지 않음");
+    printf("무방향 그래프: %s\n", isLinkedGraphEmpty(undirectedGraph) ? "비어있음" : "비어있지 않음");
     
     // 16. 메모리 해제
     printf("\n16. 그래프 메모리 해제\n");
