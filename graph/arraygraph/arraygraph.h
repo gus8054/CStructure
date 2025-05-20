@@ -8,7 +8,7 @@ typedef struct ArrayGraphType{
     int maxVertexCount;
     int currentVertexCount;
     enum GraphType graphType; // 그래프 타입(1: undirected(무방향), 2: directed(방향))
-    int * pVertex;            // 인덱스 : 노드번호, 값 : NOT_USED / USED
+    bool * pVertex;            // 인덱스 : 노드번호, 값 : NOT_USED / USED
     int **ppAdjacentEdge;
 } ArrayGraph;
 
@@ -29,5 +29,5 @@ bool removeEdgeAG(ArrayGraph* pGraph, int fromVertexID, int toVertexID);
 #define NOT_USED    0
 #define USED        1
 
-#define FAIL        0
-#define SUCCESS     1
+// #define FAIL        0
+// #define SUCCESS     1
