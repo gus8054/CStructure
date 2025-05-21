@@ -12,7 +12,8 @@
 // #include "tree/arrayheap/arrayheaptest.c"
 // #include "tree/binsearchtree/binsearchtreetest.c"
 // #include "graph/arraygraph/arraygraphtest.c"
-#include "graph/linkedgraph/linkedgraphtest.c"
+// #include "graph/linkedgraph/linkedgraphtest.c"
+#include "graph/graphtraversal/graphtraversaltest.c"
 
 int main() {
   // arrayListMain();
@@ -29,6 +30,7 @@ int main() {
   // arrayHeapTestMain();
   // binSearchTreeMain();
   // arrayGraphMain();
-  linkedGraphMain();
+  // linkedGraphMain();
+  graphTraversalMain();
   return 0;
 }
