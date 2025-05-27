@@ -14,7 +14,11 @@
 // #include "graph/arraygraph/arraygraphtest.c"
 // #include "graph/linkedgraph/linkedgraphtest.c"
 // #include "graph/graphtraversal/graphtraversaltest.c"
-#include "graph/graphmst/graphmsttest.c"
+// #include "graph/graphmst/kruskal/graphmsttest.c"
+// #include "sort/selectionsort/selectionsorttest.c"
+// #include "sort/bubblesort/bubblesorttest.c"
+// #include "sort/quicksort/quicksorttest.c"
+#include "sort/insertionsort/insertionsorttest.c"
 
 int main() {
   // arrayListMain();
@@ -33,6 +37,10 @@ int main() {
   // arrayGraphMain();
   // linkedGraphMain();
   // graphTraversalMain();
-  graphMSTMain();
+  // graphMSTMain();
+  // selectionSortMain();
+  // bubbleSortMain();
+  // quickSortMain();
+  insertionSortMain();
   return 0;
 }
