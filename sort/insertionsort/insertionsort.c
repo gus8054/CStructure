@@ -10,18 +10,14 @@ void printArray(int value[], int count){
 }
 
 void insertionSort(int value[], int count){
-    if(count <= 0) return;
+    if(count <= 1) return;
     for(int i = 1; i <= count - 1; i++){
-        int temp = value[i];
-        int j = i - 1;
-        while(j >= 0){
-            if(temp < value[j]){
-                value[j+1] = value[j];
-                j--;
-            }else break; 
+        int j = i;
+        int item = value[i];
+        while(!(j <= 0 || value[j - 1] <= item)){
+            value[j] = value[j - 1];
+            j--;
         }
-        value[j + 1] = temp;
-        printf("Step-%d, ", i);
-        printArray(value, count);
+        if(j != i) value[j] = item;
     }
 }
