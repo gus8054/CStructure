@@ -12,60 +12,49 @@ typedef struct BinTreeNodeType{
 
 typedef struct BinTreeType{
     BinTreeNode* pRootNode;
-}BinTree;
+} BinTree;
 
-typedef struct StackNodeType{
-    BinTreeNode* data;
-    struct StackNodeType* pLink;
-} StackNode;
+typedef struct LinkedStackNodeType{
+    BinTreeNode* pTreeNode;
+    struct LinkedStackNodeType* pLink;
+} LinkedStackNode;
 
-typedef struct StackType{
+typedef struct LinkedStackType{
     int currentElementCount;
-    StackNode* pTopElement;
-} Stack;
+    LinkedStackNode* pTopElement;
+} LinkedStack;
 
-typedef struct QueueNodeType{
-    BinTreeNode* data;
-    struct QueueNodeType* pLink;
-} QueueNode;
+typedef struct LinkedQueueNodeType{
+    BinTreeNode* pTreeNode;
+    struct LinkedQueueNodeType* pLink;
+} LinkedQueueNode;
 
-typedef struct QueueType{
+typedef struct LinkedQueueType{
     int currentElementCount;
-    QueueNode* pFront;
-    QueueNode* pRear;
-} Queue;
+    LinkedQueueNode* pFront;
+    LinkedQueueNode* pRear;
+} LinkedQueue;
 
 BinTree* createBinTree(BinTreeNode rootNode);
-void deleteBinTree(BinTree* pBinTree);
-void removeBinTreeNode(BinTreeNode* pNode);
-BinTreeNode* insertLeftChildNodeBT(BinTreeNode* pParent, BinTreeNode element);
-BinTreeNode* insertRightChildNodeBT(BinTreeNode* pParent, BinTreeNode element);
-BinTreeNode* getRootNodeBT(BinTree* pBinTree);
-BinTreeNode* getLeftChildNodeBT(BinTreeNode* pParentNode);
-BinTreeNode* getRightChildNodeBT(BinTreeNode* pParentNode);
+void deleteBinTree(BinTree* pTree);
+void deleteBinTreeNode(BinTreeNode* pNode);
+BinTreeNode* insertLeftChildNodeBT(BinTreeNode* pNode, BinTreeNode element);
+BinTreeNode* insertRightChildNodeBT(BinTreeNode* pNode, BinTreeNode element);
 
-Stack* createStack();
-void deleteStack(Stack* pStack);
-bool pushStack(Stack* pStack, StackNode element);
-StackNode* popStack(Stack* pStack);
-bool isStackFull(Stack* pStack);
-bool isStackEmpty(Stack* pStack);
-int getStackLength(Stack* pStack);
-StackNode* peekStack(Stack* pStack);
+LinkedStack* createLinkedStack();
+void deleteLinkedStack(LinkedStack* pStack);
+bool pushLS(LinkedStack* pStack, LinkedStackNode element);
+LinkedStackNode* popLS(LinkedStack* pStack);
+LinkedStackNode* peekLS(LinkedStack* pStack);
 
-Queue* createQueue();
-void deleteQueue(Queue* pQueue);
-bool enqueueQueue(Queue* pQueue, QueueNode element);
-QueueNode* dequeueQueue(Queue* pQueue);
-bool isQueueFull(Queue* pQueue);
-bool isQueueEmpty(Queue* pQueue);
-int getQueueLength(Queue* pQueue);
-QueueNode* peekQueue(Queue* pQueue);
+LinkedQueue* createLinkedQueue();
+void deleteLinkedQueue(LinkedQueue* pQueue);
+bool enqueueLQ(LinkedQueue* pQueue, LinkedQueueNode element);
+LinkedQueueNode* dequeueLQ(LinkedQueue* pQueue);
+LinkedQueueNode* peekLQ(LinkedQueue* pQueue);
 
-void preorderTraversalBinTree(BinTree* pBinTree);
-void inorderTraversalBinTree(BinTree* pBinTree);
-void postorderTraversalBinTree(BinTree* pBinTree);
-void levelOrderTraversalBinTree(BinTree* pBinTree);
-
-bool pushBinTreeNode(Stack* pStack, BinTreeNode* pNode);
-bool enqueueBinTreeNode(Queue* pQueue, BinTreeNode* pNode);
+void preorderTraversalBinTree(BinTree* pTree);
+void inorderTraversalBinTree(BinTree* pTree);
+void postorderTraversalBinTree(BinTree* pTree);
+void postorderTraversalBinTreeWithTwoStacks(BinTree* pTree);
+void levelOrderTraversalBinTree(BinTree* pTree);

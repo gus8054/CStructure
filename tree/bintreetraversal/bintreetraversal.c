@@ -1,81 +1,75 @@
 #include "bintreetraversal.h"
 
-BinTree* createBinTree(BinTreeNode element){
+BinTree* createBinTree(BinTreeNode rootNode){
     BinTree* pReturn = (BinTree*)malloc(sizeof(BinTree));
     if(pReturn == NULL) return NULL;
 
-    BinTreeNode* pRootNode = (BinTreeNode*)malloc(sizeof(BinTreeNode));
-    if(pRootNode == NULL){
+    pReturn->pRootNode = (BinTreeNode*)malloc(sizeof(BinTreeNode));
+    if(pReturn->pRootNode == NULL){
         free(pReturn);
         return NULL;
     }
-    memset(pRootNode, 0, sizeof(BinTreeNode));
-    pRootNode->data = element.data;
-    pReturn->pRootNode = pRootNode;
+    pReturn->pRootNode->data = rootNode.data;
+    pReturn->pRootNode->pLeftChild = NULL;
+    pReturn->pRootNode->pRightChild = NULL;
+    
     return pReturn;
 }
 
-void deleteBinTree(BinTree* pBinTree){
-    if(pBinTree == NULL) return;
-    removeBinTreeNode(pBinTree->pRootNode);
-    free(pBinTree);
+void deleteBinTree(BinTree* pTree){
+    if(pTree == NULL) return;
+    deleteBinTreeNode(pTree->pRootNode);
+    free(pTree);
 }
 
-void removeBinTreeNode(BinTreeNode* pNode){
+void deleteBinTreeNode(BinTreeNode* pNode){
     if(pNode == NULL) return;
-    removeBinTreeNode(pNode->pLeftChild);
-    removeBinTreeNode(pNode->pRightChild);
+    deleteBinTreeNode(pNode->pLeftChild);
+    deleteBinTreeNode(pNode->pRightChild);
     free(pNode);
 }
 
 BinTreeNode* insertLeftChildNodeBT(BinTreeNode* pNode, BinTreeNode element){
     if(pNode == NULL) return NULL;
     if(pNode->pLeftChild != NULL) return NULL;
-    BinTreeNode* pNewNode = (BinTreeNode*)malloc(sizeof(BinTreeNode));
-    memset(pNewNode, 0, sizeof(BinTreeNode));
-    pNewNode->data = element.data;
-    pNode->pLeftChild = pNewNode;
-    return pNewNode;
-}
-
-BinTreeNode* insertRightCHildNodeBT(BinTreeNode* pNode, BinTreeNode element){
-    if(pNode == NULL) return NULL;
-    if(pNode->pRightChild != NULL) return NULL;
-    BinTreeNode* pNewNode = (BinTreeNode*)malloc(sizeof(BinTreeNode));
-    if(pNewNode == NULL) return NULL;
-    memset(pNewNode, 0, sizeof(BinTreeNode));
-    pNewNode->data = element.data;
-    pNode->pRightChild = pNewNode;
-    return pNewNode;
-}
-
-BinTreeNode* getRootNodeBT(BinTree* pBinTree){
-    if(pBinTree == NULL) return NULL;
-    return pBinTree->pRootNode;
-}
-
-BinTreeNode* getLeftChildNodeBT(BinTreeNode* pNode){
-    if(pNode == NULL) return NULL;
-    return pNode->pLeftChild;
-}
-
-BinTreeNode* getRightChildNodeBT(BinTreeNode* pNode){
-    if(pNode == NULL) return NULL;
-    return pNode->pRightChild;
-}
-
-Stack* createStack(){
-    Stack* pReturn = (Stack*)malloc(sizeof(Stack));
+    BinTreeNode* pReturn = (BinTreeNode*)malloc(sizeof(BinTreeNode));
     if(pReturn == NULL) return NULL;
-    memset(pReturn, 0, sizeof(Stack));
+    pReturn->data = element.data;
+    pReturn->pLeftChild = NULL;
+    pReturn->pRightChild = NULL;
+    
+    pNode->pLeftChild = pReturn;
+
     return pReturn;
 }
 
-void deleteStack(Stack* pStack){
+BinTreeNode* insertRightChildNodeBT(BinTreeNode* pNode, BinTreeNode element){
+    if(pNode == NULL) return NULL;
+    if(pNode->pRightChild != NULL) return NULL;
+    BinTreeNode* pReturn = (BinTreeNode*)malloc(sizeof(BinTreeNode));
+    if(pReturn == NULL) return NULL;
+    pReturn->data = element.data;
+    pReturn->pLeftChild = NULL;
+    pReturn->pRightChild = NULL;
+    
+    pNode->pRightChild = pReturn;
+
+    return pReturn;
+}
+
+LinkedStack* createLinkedStack(){
+    LinkedStack* pReturn = (LinkedStack*)malloc(sizeof(LinkedStack));
+    if(pReturn == NULL) return NULL;
+    pReturn->currentElementCount = 0;
+    pReturn->pTopElement = NULL;
+    return pReturn;
+}
+
+void deleteLinkedStack(LinkedStack* pStack){
     if(pStack == NULL) return;
 
-    StackNode* pCurrentNode = pStack->pTopElement;
-    StackNode* pDelNode = NULL;
+    LinkedStackNode* pCurrentNode = pStack->pTopElement;
+    LinkedStackNode* pDelNode = NULL;
 
     while(pCurrentNode != NULL){
         pDelNode = pCurrentNode;
@@ -86,80 +80,66 @@ void deleteStack(Stack* pStack){
     free(pStack);
 }
 
-bool pushStack(Stack* pStack, StackNode element){
+bool pushLS(LinkedStack* pStack, LinkedStackNode element){
     if(pStack == NULL) return false;
-    if(isStackFull(pStack)) return false;
-    
-    StackNode* pNewNode = (StackNode*)malloc(sizeof(StackNode));
-    if(pNewNode == NULL) return false;
-    pNewNode->data = element.data;
-    pNewNode->pLink = pStack->pTopElement;
 
+    LinkedStackNode* pNewNode = (LinkedStackNode*)malloc(sizeof(LinkedStackNode));
+    if(pNewNode == NULL) return false;
+
+    pNewNode->pTreeNode = element.pTreeNode;
+    pNewNode->pLink = pStack->pTopElement;
     pStack->pTopElement = pNewNode;
     pStack->currentElementCount++;
     return true;
 }
 
-StackNode* popStack(Stack* pStack){
+LinkedStackNode* popLS(LinkedStack* pStack){
     if(pStack == NULL) return NULL;
-    if(isStackEmpty(pStack)) return NULL;
+    if(pStack->currentElementCount == 0) return NULL;
 
-    StackNode* pReturn = pStack->pTopElement;
+    LinkedStackNode* pReturn = pStack->pTopElement;
     pStack->pTopElement = pReturn->pLink;
     pReturn->pLink = NULL;
-
     pStack->currentElementCount--;
     return pReturn;
 }
 
-bool isStackFull(Stack* pStack){
-    return false;
-}
-
-bool isStackEmpty(Stack* pStack){
-    if(pStack == NULL) return false;
-    return pStack->currentElementCount == 0;
-}
-
-int getStackLength(Stack* pStack){
-    if(pStack == NULL) return 0;
-    return pStack->currentElementCount;
-}
-
-StackNode* peekStack(Stack* pStack){
+LinkedStackNode* peekLS(LinkedStack* pStack){
     if(pStack == NULL) return NULL;
+    if(pStack->currentElementCount == 0) return NULL;
     return pStack->pTopElement;
 }
 
-Queue* createQueue(){
-    Queue* pReturn = (Queue*)malloc(sizeof(Queue));
+LinkedQueue* createLinkedQueue(){
+    LinkedQueue* pReturn = (LinkedQueue*)malloc(sizeof(LinkedQueue));
     if(pReturn == NULL) return NULL;
-    memset(pReturn, 0, sizeof(Queue));
+
+    pReturn->currentElementCount = 0;
+    pReturn->pFront = NULL;
+    pReturn->pRear = NULL;
     return pReturn;
 }
 
-void deleteQueue(Queue* pQueue){
+void deleteLinkedQueue(LinkedQueue* pQueue){
     if(pQueue == NULL) return;
 
-    QueueNode* pCurrentNode = pQueue->pFront;
-    QueueNode* pDelNode = NULL;
+    LinkedQueueNode* pCurrentNode = pQueue->pFront;
+    LinkedQueueNode* pDelNode = NULL;
 
     while(pCurrentNode != NULL){
         pDelNode = pCurrentNode;
         pCurrentNode = pCurrentNode->pLink;
         free(pDelNode);
     }
-
     free(pQueue);
 }
 
-bool enqueueQueue(Queue* pQueue, QueueNode element){
+bool enqueueLQ(LinkedQueue* pQueue, LinkedQueueNode element){
     if(pQueue == NULL) return false;
-    if(isQueueFull(pQueue)) return false;
-
-    QueueNode* pNewNode = (QueueNode*)malloc(sizeof(QueueNode));
+    LinkedQueueNode* pNewNode = (LinkedQueueNode*)malloc(sizeof(LinkedQueueNode));
     if(pNewNode == NULL) return false;
-    pNewNode->data = element.data;
+
+    pNewNode->pTreeNode = element.pTreeNode;
     pNewNode->pLink = NULL;
 
     if(pQueue->currentElementCount == 0){
@@ -169,164 +149,189 @@ bool enqueueQueue(Queue* pQueue, QueueNode element){
         pQueue->pRear->pLink = pNewNode;
         pQueue->pRear = pNewNode;
     }
+
     pQueue->currentElementCount++;
     return true;
 }
 
-QueueNode* dequeueQueue(Queue* pQueue){
+LinkedQueueNode* dequeueLQ(LinkedQueue* pQueue){
     if(pQueue == NULL) return NULL;
-    if(isQueueEmpty(pQueue)) return NULL;
+    if(pQueue->currentElementCount == 0) return NULL;
 
-    QueueNode* pTargetNode = pQueue->pFront;
+    LinkedQueueNode* pReturn = pQueue->pFront;
+
     if(pQueue->currentElementCount == 1){
         pQueue->pFront = NULL;
         pQueue->pRear = NULL;
     }else{
-        pQueue->pFront = pTargetNode->pLink;
-        pTargetNode->pLink = NULL;
+        pQueue->pFront = pReturn->pLink;
+        pReturn->pLink = NULL;
     }
     pQueue->currentElementCount--;
-    return pTargetNode;
+    return pReturn;
 }
 
-bool isQueueFull(Queue* pQueue){
-    return false;
-}
-
-bool isQueueEmpty(Queue* pQueue){
-    if(pQueue == NULL) return false;
-    return pQueue->currentElementCount == 0;
-}
-
-int getQueueLength(Queue* pQueue){
-    if(pQueue == NULL) return 0;
-    return pQueue->currentElementCount;
-}
-
-QueueNode* peekQueue(Queue* pQueue){
+LinkedQueueNode* peekLQ(LinkedQueue* pQueue){
     if(pQueue == NULL) return NULL;
+    if(pQueue->currentElementCount == 0) return NULL;
     return pQueue->pFront;
 }
 
-bool pushBinTreeNode(Stack* pStack, BinTreeNode* pNode){
-    if(pStack == NULL || pNode == NULL) return false;
-    StackNode node;
-    node.data = pNode;
-    return pushStack(pStack, node);
-}
+void preorderTraversalBinTree(BinTree* pTree){
+    if(pTree == NULL) return;
+    if(pTree->pRootNode == NULL) return;
 
-bool enqueueBinTreeNode(Queue* pQueue, BinTreeNode* pNode){
-    if(pQueue == NULL || pNode == NULL) return false;
-    QueueNode node;
-    node.data = pNode;
-    return enqueueQueue(pQueue, node);
-}
-
-void preorderTraversalBinTree(BinTree* pBinTree){
-    if(pBinTree == NULL) return;
-
-    Stack* pStack = createStack();
+    LinkedStack* pStack = createLinkedStack();
     if(pStack == NULL) return;
 
-    BinTreeNode* pRootNode = pBinTree->pRootNode;
-    if(pRootNode == NULL) return;
-
-    pushBinTreeNode(pStack, pBinTree->pRootNode);
-
-    while(!isStackEmpty(pStack)){
-        StackNode* pStackNode = popStack(pStack);
-        if(pStackNode == NULL) return;
-        pRootNode = pStackNode->data;
-        
-        printf("%c ", pRootNode->data);
-    
-        if(pRootNode->pRightChild != NULL){
-            pushBinTreeNode(pStack, pRootNode->pRightChild);
+    pushLS(pStack, (LinkedStackNode){pTree->pRootNode, NULL});
+    while(true){
+        LinkedStackNode* pStackNode = popLS(pStack);
+        if(pStackNode == NULL){
+            deleteLinkedStack(pStack);
+            return;
         }
-    
-        if(pRootNode->pLeftChild != NULL){
-            pushBinTreeNode(pStack, pRootNode->pLeftChild);
-        }
+        BinTreeNode* pTreeNode = pStackNode->pTreeNode;
         free(pStackNode);
+        printf("%c ", pTreeNode->data);
+        if(pTreeNode->pRightChild != NULL) pushLS(pStack, (LinkedStackNode){pTreeNode->pRightChild, NULL});
+        if(pTreeNode->pLeftChild != NULL) pushLS(pStack, (LinkedStackNode){pTreeNode->pLeftChild, NULL});
+        if(pStack->currentElementCount == 0) break;
     }
-    deleteStack(pStack);
+    deleteLinkedStack(pStack);
 }
 
-void inorderTraversalBinTree(BinTree* pBinTree){
-    if(pBinTree == NULL) return;
-    
-    Stack* pStack = createStack();
+void inorderTraversalBinTree(BinTree* pTree){
+    if(pTree == NULL) return;
+    if(pTree->pRootNode == NULL) return;
+
+    LinkedStack* pStack = createLinkedStack();
     if(pStack == NULL) return;
+
+    BinTreeNode* pCurrentNode = pTree->pRootNode;
+    while(true){
+        while(pCurrentNode != NULL){
+            pushLS(pStack, (LinkedStackNode){pCurrentNode, NULL});
+            pCurrentNode = pCurrentNode->pLeftChild;
+        } 
     
-    BinTreeNode* pNode = getRootNodeBT(pBinTree);
-    if(pNode == NULL) return;
+        if(pStack->currentElementCount == 0) break;
+        LinkedStackNode* pStackNode = popLS(pStack);
+        if(pStackNode == NULL){
+            deleteLinkedStack(pStack);
+            return;
+        } 
+        pCurrentNode = pStackNode->pTreeNode;
+        free(pStackNode);
+        printf("%c ", pCurrentNode->data);
+    
+        pCurrentNode = pCurrentNode->pRightChild;
+    }
+    deleteLinkedStack(pStack);
+}
+
+void postorderTraversalBinTree(BinTree* pTree){
+    if(pTree == NULL) return;
+    if(pTree->pRootNode == NULL) return;
+
+    LinkedStack* pStack = createLinkedStack();
+    if(pStack == NULL) return;
+
+    pushLS(pStack, (LinkedStackNode){pTree->pRootNode, NULL});
+    while(true){
+        LinkedStackNode* pStackNode = peekLS(pStack);
+        if(pStackNode == NULL){
+            deleteLinkedStack(pStack);
+            return;
+        } 
+        BinTreeNode* pTreeNode = pStackNode->pTreeNode;
+
+        if(pTreeNode->pLeftChild != NULL && pTreeNode->pLeftChild->visited == false){
+            pushLS(pStack, (LinkedStackNode){pTreeNode->pLeftChild, NULL});
+        }else if(pTreeNode->pRightChild != NULL && pTreeNode->pRightChild->visited == false){
+            pushLS(pStack, (LinkedStackNode){pTreeNode->pRightChild, NULL});
+        }else{
+            printf("%c ", pTreeNode->data);
+            pTreeNode->visited = true;
+            LinkedStackNode* pDelNode = popLS(pStack);
+            if(pDelNode == NULL){
+                deleteLinkedStack(pStack);
+                return;
+            }
+            free(pDelNode);
+        }
+        if(pStack->currentElementCount == 0) break;
+    }
+    deleteLinkedStack(pStack);
+}
+
+void postorderTraversalBinTreeWithTwoStacks(BinTree* pTree){
+    if(pTree == NULL) return;
+    if(pTree->pRootNode == NULL) return;
+
+    LinkedStack* pStack1 = createLinkedStack();
+    if(pStack1 == NULL) return;
+    
+    LinkedStack* pStack2 = createLinkedStack();
+    if(pStack2 == NULL){
+        deleteLinkedStack(pStack1);
+        return;
+    }
+
+    pushLS(pStack1, (LinkedStackNode){pTree->pRootNode, NULL});
+    while(true){
+        LinkedStackNode* pStackNode = popLS(pStack1);
+        if(pStackNode == NULL){
+            deleteLinkedStack(pStack2);
+            deleteLinkedStack(pStack1);
+            return;
+        }
+        BinTreeNode* pTreeNode = pStackNode->pTreeNode;
+        free(pStackNode);
+
+        pushLS(pStack2, (LinkedStackNode){pTreeNode, NULL});
+
+        if(pTreeNode->pLeftChild != NULL) pushLS(pStack1, (LinkedStackNode){pTreeNode->pLeftChild, NULL});
+        if(pTreeNode->pRightChild != NULL) pushLS(pStack1, (LinkedStackNode){pTreeNode->pRightChild, NULL});
+        if(pStack1->currentElementCount == 0) break;
+    }
 
     while(true){
-        while(pNode != NULL){
-            pushBinTreeNode(pStack, pNode);
-            pNode = pNode->pLeftChild;
-    
+        LinkedStackNode* pStackNode = popLS(pStack2);
+        if(pStackNode == NULL){
+            deleteLinkedStack(pStack2);
+            deleteLinkedStack(pStack1);
+            return;
         }
-        if(isStackEmpty(pStack)) break;
-        StackNode* pStackNode = popStack(pStack);
-        if(pStackNode == NULL) return;
-        pNode = pStackNode->data;
-    
-        printf("%c ", pNode->data);
-        
-        pNode = getRightChildNodeBT(pNode);
+        BinTreeNode* pTreeNode = pStackNode->pTreeNode;
         free(pStackNode);
+        printf("%c ", pTreeNode->data);
+        if(pStack2->currentElementCount == 0) break;
     }
-    deleteStack(pStack);
+    deleteLinkedStack(pStack2);
+    deleteLinkedStack(pStack1);
 }
+void levelOrderTraversalBinTree(BinTree* pTree){
+    if(pTree == NULL) return;
+    if(pTree->pRootNode == NULL) return;
 
-void postorderTraversalBinTree(BinTree* pBinTree){
-    if(pBinTree == NULL) return;
-
-    BinTreeNode* pRootNode = getRootNodeBT(pBinTree);
-    if(pRootNode == NULL) return;
-
-    Stack* pStack = createStack();
-    if(pStack == NULL) return;
-
-    pushBinTreeNode(pStack, pRootNode);
-
-    while(!isStackEmpty(pStack)){
-        StackNode* pStackNode = peekStack(pStack);
-        BinTreeNode* pBTNode = pStackNode->data;
-
-        if(pBTNode->pLeftChild != NULL && pBTNode->pLeftChild->visited == false)
-            pushBinTreeNode(pStack, pBTNode->pLeftChild);
-        else if(pBTNode->pRightChild != NULL && pBTNode->pRightChild->visited == false)
-            pushBinTreeNode(pStack, pBTNode->pRightChild);
-        else{
-            pBTNode->visited = true;
-            printf("%c ", pBTNode->data);
-            free(popStack(pStack));
-        }
-    }
-    deleteStack(pStack);
-}
-
-void levelOrderTraversalBinTree(BinTree* pBinTree){
-    if(pBinTree == NULL) return;
-
-    BinTreeNode* pRootNode = pBinTree->pRootNode;
-    if(pRootNode == NULL) return;
-
-    Queue* pQueue = createQueue();
+    LinkedQueue* pQueue = createLinkedQueue();
     if(pQueue == NULL) return;
 
-    enqueueBinTreeNode(pQueue, pRootNode);
-    while(!isQueueEmpty(pQueue)){
-        QueueNode* pQueueNode = dequeueQueue(pQueue);
-        BinTreeNode* pBTNode = pQueueNode->data;
-        printf("%c ", pBTNode->data);
-
-        if(pBTNode->pLeftChild != NULL) enqueueBinTreeNode(pQueue, pBTNode->pLeftChild);
-        if(pBTNode->pRightChild != NULL) enqueueBinTreeNode(pQueue, pBTNode->pRightChild);
-
+    enqueueLQ(pQueue, (LinkedQueueNode){pTree->pRootNode, NULL});
+    while(true){
+        LinkedQueueNode* pQueueNode = dequeueLQ(pQueue);
+        if(pQueueNode == NULL){
+            deleteLinkedQueue(pQueue);
+            return;
+        }
+        BinTreeNode* pTreeNode = pQueueNode->pTreeNode;
         free(pQueueNode);
+
+        printf("%c ", pTreeNode->data);
+        if(pTreeNode->pLeftChild != NULL) enqueueLQ(pQueue, (LinkedQueueNode){pTreeNode->pLeftChild, NULL});
+        if(pTreeNode->pRightChild != NULL) enqueueLQ(pQueue, (LinkedQueueNode){pTreeNode->pRightChild, NULL});
+        if(pQueue->currentElementCount == 0) break;
     }
-    deleteQueue(pQueue);
+    deleteLinkedQueue(pQueue);
 }
