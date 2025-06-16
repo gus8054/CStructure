@@ -3,22 +3,21 @@
 #include <stdbool.h>
 #include <string.h>
 
+typedef int ElementType;
+
 typedef struct ArrayListNodeType{
-  int data;
+    ElementType data;
 } ArrayListNode;
 
 typedef struct ArrayListType{
-  int maxElementCount;
-  int currentElementCount;
-  ArrayListNode* pElement;
+    int currentElementCount;
+    int maxElementCount;
+    ArrayListNode* pElement;
 } ArrayList;
 
-ArrayList* createArrayList(int maxElementCount);
-void deleteArrayList(ArrayList* pList);
-bool addALElement(ArrayList* pList, int position, ArrayListNode element);
-bool removeALElement(ArrayList* pList, int position);
-bool isArrayListFull(ArrayList* pList);
-void clearArrayList(ArrayList* pList);
-int getArrayListLength(ArrayList* pList);
-ArrayListNode* getArrayListNode(ArrayList* pList, int position);
-
+ArrayList* AL_Create(int maxElementCount);
+void AL_Destroy(ArrayList* pList);
+bool AL_Insert(ArrayList* pList, int position, ElementType element);
+bool AL_Remove(ArrayList* pList, int position);
+bool AL_Clear(ArrayList* pList);
+ArrayListNode* AL_GetAt(ArrayList* pList, int position);
